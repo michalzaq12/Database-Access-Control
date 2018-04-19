@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BSK - Panel</title>
+    <% include ../partials/libraries.ejs %>
+    <style>
+        .grid-container{
+            display: grid;
+            grid-template-columns: auto auto;
+        }
+
+    </style>
+</head>
+<body>
+<div>Zalogowano jako: <%= user.username%> <button onclick="logout()">Wyloguj</button></div>
+<script>
+    function logout() {
+        axios.get('/logout')
+            .then(function (response) {
+                console.log(response);
+                window.location.pathname = '/';
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+    }
+</script>
+<div class="grid-container">
+
+</div>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BSK - Home</title>
+    <% include ../partials/libraries.ejs %>
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-columns: auto auto;
+        }
+
+        .login-form, .register-form {
+            padding-left: calc(25%);
+        }
+    </style>
+</head>
+<body>
+<div class="grid-container">
+    <div class="login-form">
+        <h1>LOGIN</h1>
+        <p>Username: <input id="username"></p>
+        <p>Password: <input id="password" type="password"></p>
+        <button onclick="login()">Login</button>
+    </div>
+    <div class="register-form">
+        <h1>REGISTER</h1>
+        <p>Username: <input id="username2"></p>
+        <p>Password: <input id="password2" type="password"></p>
+        <button onclick="register()">Register</button>
+    </div>
+
+    <script>
+        function login() {
+            axios.post('/login', {
+                username: document.querySelector("#username").value,
+                password: document.querySelector("#password").value
+            }).then(function () {
+                window.location.pathname = '/panel';
+            }).catch(function (error) {
+                notie.alert({
+                    type: 'error',
+                    text: error.response.data,
+                    position: 'bottom'
+                })
+            });
+        }
+        
+        
+        function register() {
+            axios.post('/createUser', {
+                username: document.querySelector("#username2").value,
+                password: document.querySelector("#password2").value
+            }).then(function () {
+                notie.alert({
+                    type: 'success',
+                    text: "Pomyślnie dodano użytkownika",
+                    position: 'bottom'
+                })
+            }).catch(function (error) {
+                notie.alert({
+                    type: 'error',
+                    text: error.response.data,
+                    position: 'bottom'
+                })
+            });
+        }
+    </script>
+</div>
+</body>
+</html>
