@@ -48,7 +48,7 @@
         
         
         function register() {
-            axios.post('/createUser', {
+            axios.post('/users', {
                 username: document.querySelector("#username2").value,
                 password: document.querySelector("#password2").value
             }).then(function () {

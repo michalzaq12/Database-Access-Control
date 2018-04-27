@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BSK - Admin</title>
+    <% include ../partials/libraries.ejs %>
+    <style>
+        .grid-container{
+            /*display: grid;*/
+            /*grid-template-columns: 20% auto 20%;*/
+            /*grid-template-areas: ". table .";*/
+            /*width: 100%;*/
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .table{
+            max-width: 50%;
+            margin: 0 auto;
+        }
+        
+        @media (max-width: 700px) {
+            .table{
+                max-width: 100%;
+            }
+        }
+
+        .row{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 20px 0;
+            border-bottom: 1px solid black;
+        }
+
+        .row > div{
+            min-width: 100px;
+        }
+
+        .row:first-child{
+            border-bottom: 3px solid black;
+            font-weight: bold;
+        }
+
+        .row:nth-child(2n){
+            background-color: aliceblue;
+        }
+
+
+
+    </style>
+</head>
+<body>
+
+<div class="grid-container">
+    <div class="table">
+        <div class="row">
+            <div>Username</div>
+            <div>Secure level</div>
+            <div>Remove user</div>
+        </div>
+        <% users.forEach(function (user) { %>
+            <div class="row">
+                <div><%=user.username%></div>
+                <div class="levelChooser" data-user-id="<%=user.id%>">
+                    <select>
+                        <option value="1" <%- user.secureLevel == 1 ? 'selected' : ''%>>Jawny</option>
+                        <option value="2" <%- user.secureLevel == 2 ? 'selected' : ''%>>Poufny</option>
+                        <option value="3" <%- user.secureLevel == 3 ? 'selected' : ''%>>Tajny</option>
+                    </select>
+                </div>
+                <div><button class="removeButton" data-user-id="<%=user.id%>">X</button></div>
+            </div>
+        <%});%>
+    </div>
+</div>
+
+<script>
+    var elements = document.querySelectorAll('.levelChooser');
+    elements.forEach(function (el) {
+        el.addEventListener('change', function () {
+            var userId = el.dataset.userId;
+            var newLevel = el.querySelector('select').value;
+
+            axios.put('/users/' + userId, {
+               secureLevel: newLevel
+            }).then(function () {
+                notie.alert({
+                    type: 'success',
+                    text: "Pomyślnie zmieniono poziom uprawnień",
+                    position: 'bottom'
+                })
+            }).catch(function (error) {
+                notie.alert({
+                    type: 'error',
+                    text: error.response.data,
+                    position: 'bottom'
+                })
+            });
+        });
+    });
+
+
+    var buttons = document.querySelectorAll('.removeButton');
+    buttons.forEach(function (el) {
+        el.addEventListener('click', function () {
+            var userId = el.dataset.userId;
+
+            axios.delete('/users/' + userId).then(function () {
+                notie.alert({
+                    type: 'success',
+                    text: "Pomyślnie usunięto użytkownika",
+                    position: 'bottom'
+                })
+                el.parentElement.parentElement.remove();
+            }).catch(function (error) {
+                notie.alert({
+                    type: 'error',
+                    text: error.response.data,
+                    position: 'bottom'
+                })
+            });
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,5 +1,8 @@
 const crypto = require('crypto');
+const Sequelize = require('sequelize');
 const {User} = require('../models');
+const Op = Sequelize.Op;
+
 
 module.exports = {
     /**
@@ -33,6 +36,27 @@ module.exports = {
                 resolve(user);
             }).catch(err => reject(err))
         });
+    },
+
+
+    getUsers(){
+        console.log(`Getting all users from db`);
+        return User.findAll({
+            attributes: ['id', 'username', 'secureLevel'],
+            where: {
+                isAdmin: false
+            }
+        })
+    },
+
+    updateSecureLevel(id, secureLevel){
+        console.log(`Updating secure level`);
+        return User.update({secureLevel},{where: {id}})
+    },
+
+    removeUser(id){
+        console.log(`Removing user`);
+        return User.destroy({where: {id}})
     }
 };
 

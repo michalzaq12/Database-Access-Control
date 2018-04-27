@@ -10,7 +10,7 @@ module.exports = function (db) {
       username: {type: Sequelize.STRING, unique: true},
       password: Sequelize.STRING,
       salt: Sequelize.STRING,
-      secureLevel: {type: Sequelize.INTEGER, validate: {min:0, max:3}},
-      isAdmin: Sequelize.BOOLEAN
+      secureLevel: {type: Sequelize.INTEGER, validate: {min:1, max:3}, defaultValue: 1},
+      isAdmin: {type: Sequelize.BOOLEAN, defaultValue: false}
   });
 };

@@ -6,14 +6,25 @@
     <% include ../partials/libraries.ejs %>
     <style>
         .grid-container{
-            display: grid;
-            grid-template-columns: auto auto;
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 50px;
         }
 
     </style>
 </head>
 <body>
-<div>Zalogowano jako: <%= user.username%> <button onclick="logout()">Wyloguj</button></div>
+
+<div class="grid-container">
+    <div>Zalogowano jako: <%= user.username%> </div>
+    <div>
+        <% if(user.isAdmin){ %>
+        <button onclick="location.pathname='/adminPanel'">admin panel</button>
+        <%}%>
+        <button onclick="logout()">Wyloguj</button>
+    </div>
+</div>
+
 <script>
     function logout() {
         axios.get('/logout')
@@ -27,8 +38,6 @@
 
     }
 </script>
-<div class="grid-container">
 
-</div>
 </body>
 </html>
