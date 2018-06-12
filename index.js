@@ -19,7 +19,6 @@ app.use(session({
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(express.static(__dirname + '/views'));
 app.use('/', routes);
 
 // sync() will create all table if they doesn't exist in database

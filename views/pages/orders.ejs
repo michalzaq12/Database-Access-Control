@@ -31,10 +31,6 @@
             .table{
                 max-width: 100%;
             }
-
-            .row > div {
-                width: 30%;
-            }
         }
 
         .row{
@@ -46,7 +42,7 @@
         }
 
         .row > div{
-            min-width: 200px;
+            width: 60%;
         }
 
         .row > div:first-child{
@@ -62,6 +58,10 @@
             background-color: aliceblue;
         }
 
+        .newline{
+            display: block;
+        }
+
     </style>
 </head>
 <body>
@@ -70,9 +70,9 @@
     <div>Login as: <%= user.username%> </div>
     <div>
         <% if(user.isAdmin){ %>
-        <button onclick="location.pathname='/admin'">admin panel</button>
+        <button onclick="location.pathname='/adminPanel'">admin panel</button>
         <%}%>
-        <button onclick="location.pathname='/orders'">orders</button>
+        <button onclick="location.pathname='/panel'">panel</button>
         <button onclick="logout()">Logout</button>
     </div>
 </div>
@@ -80,21 +80,23 @@
 <div class="grid-container2">
     <div class="table">
         <div class="row">
-            <div>Title</div>
-            <div>Price</div>
-            <div></div>
+            <div>Order id</div>
+            <div>Books</div>
         </div>
-        <% books.forEach(function (book) { %>
+        <% orders.forEach(function (order) { %>
         <div class="row">
-            <div><%=book.title%></div>
-            <div><%=book.price%> PLN</div>
-            <div><input type="checkbox" name="book" value="<%= book.id%>"></div>
+            <div><%=order.id%></div>
+            <div>
+                <ul>
+                <% order.books.forEach(function (book) { %>
+                    <li><%= book.title%></li>
+                 <%});%>
+                </ul>
+            </div>
         </div>
         <%});%>
     </div>
 </div>
-
-<button id="orderButton" onclick="orderBooks()">order</button>
 
 <script>
     function logout() {
@@ -106,29 +108,6 @@
             .catch(function (error) {
                 console.log(error);
             });
-    }
-
-    function orderBooks(){
-        let checkedBoxes =  Array.from(document.querySelectorAll('input[name=book]:checked'));
-        let books = checkedBoxes.map(box => box.value);
-
-        axios.put('/orders', {
-            books
-        }).then(function () {
-            notie.alert({
-                type: 'success',
-                text: "Books had been bought.",
-                position: 'bottom'
-            })
-            el.parentElement.parentElement.remove();
-        }).catch(function (error) {
-            notie.alert({
-                type: 'error',
-                text: error.response.data,
-                position: 'bottom'
-            })
-        });
-
     }
 </script>
 

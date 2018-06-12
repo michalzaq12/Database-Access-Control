@@ -1,7 +1,5 @@
 const crypto = require('crypto');
-const Sequelize = require('sequelize');
 const {User} = require('../models');
-const Op = Sequelize.Op;
 
 
 module.exports = {
@@ -34,7 +32,7 @@ module.exports = {
                 if(user === null) return reject("Username not found");
                 if(saltHashPassword(password, user.salt).hash !== user.password) return reject("Wrong password");
                 resolve(user);
-            }).catch(err => reject(err))
+            }).catch(reject)
         });
     },
 

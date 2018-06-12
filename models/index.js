@@ -8,20 +8,26 @@ const db = new Sequelize(config.database, config.username, config.password, {
 
 //----models
 const User = require('./user')(db);
-const Message = require('./message')(db);
+const Book = require('./book')(db);
+const Order = require('./order')(db);
 
 
 
 //----associations
-//This will add the attribute userId to Message.
-// Instances of User will get the accessors getMessages and setMessages (addMessage? // addMessages?)
-User.hasMany(Message, {as: 'Messages'});
+Order.belongsTo(User, {as: 'customer'});
+
+Book.belongsToMany(Order, {through: 'OrderBooks'});
+Order.belongsToMany(Book, {through: 'OrderBooks'});
 
 
-
+/**
+ *
+ * @type {{db: (*|Sequelize), User: Model, Order: (Sequelize.Model|Order), Book: (Model|Book)}}
+ */
 module.exports = {
     db,
     User,
-    Message
+    Order,
+    Book
 };
 

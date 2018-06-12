@@ -6,10 +6,6 @@
     <% include ../partials/libraries.ejs %>
     <style>
         .grid-container{
-            /*display: grid;*/
-            /*grid-template-columns: 20% auto 20%;*/
-            /*grid-template-areas: ". table .";*/
-            /*width: 100%;*/
             margin: 20px auto;
             text-align: center;
         }
@@ -34,7 +30,7 @@
         }
 
         .row > div{
-            min-width: 100px;
+            min-width: 200px;
         }
 
         .row:first-child{
@@ -87,7 +83,7 @@
             }).then(function () {
                 notie.alert({
                     type: 'success',
-                    text: "Pomyślnie zmieniono poziom uprawnień",
+                    text: "Permission level successfully changed",
                     position: 'bottom'
                 })
             }).catch(function (error) {
@@ -109,7 +105,7 @@
             axios.delete('/users/' + userId).then(function () {
                 notie.alert({
                     type: 'success',
-                    text: "Pomyślnie usunięto użytkownika",
+                    text: "User successfully removed",
                     position: 'bottom'
                 })
                 el.parentElement.parentElement.remove();

@@ -6,7 +6,9 @@ const Sequelize = require('sequelize');
  * @returns {Sequelize.Model}
  */
 module.exports = function (db) {
-    return db.define('message',{
-        text: Sequelize.STRING,
+    const Order = db.define('order', {
+        total: Sequelize.INTEGER
     });
+    Order.secureLevel = 3;
+    return Order;
 };
